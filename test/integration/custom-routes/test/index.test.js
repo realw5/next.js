@@ -500,6 +500,7 @@ const runTests = (isDev = false) => {
         version: 3,
         pages404: true,
         basePath: '',
+        dataRoutes: [],
         redirects: [
           {
             destination: '/:path+',
@@ -751,6 +752,11 @@ const runTests = (isDev = false) => {
           },
         ],
         rewrites: [
+          {
+            destination: '/auto-export/hello',
+            regex: normalizeRegEx('^\\/rewriting-to-auto-export$'),
+            source: '/rewriting-to-auto-export',
+          },
           {
             destination: '/another/one',
             regex: normalizeRegEx('^\\/to-another$'),

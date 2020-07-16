@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { useContext, Component } from 'react'
 import flush from 'styled-jsx/server'
-import { AMP_RENDER_TARGET } from '../next-server/lib/constants'
+import {
+  AMP_RENDER_TARGET,
+  CLIENT_ROUTES_MANIFEST,
+} from '../next-server/lib/constants'
 import { DocumentContext as DocumentComponentContext } from '../next-server/lib/document-context'
 import {
   DocumentContext,
@@ -528,11 +531,15 @@ export class NextScript extends Component<OriginProps> {
 
     return [...normalScripts, ...lowPriorityScripts].map((file) => {
       let modernProps = {}
-      if (process.env.__NEXT_MODERN_BUILD) {
+      if (
+        process.env.__NEXT_MODERN_BUILD &&
+        !file.endsWith(CLIENT_ROUTES_MANIFEST)
+      ) {
         modernProps = file.endsWith('.module.js')
           ? { type: 'module' }
           : { noModule: true }
       }
+
       return (
         <script
           key={file}
